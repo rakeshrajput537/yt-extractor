@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "yt-extractor"
 include ':app'
+include ':ytube-extractor'

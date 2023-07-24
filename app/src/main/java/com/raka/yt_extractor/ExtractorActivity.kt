@@ -6,8 +6,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 
-import com.raka.yt_extractor.exception.ExtractionException
-import com.raka.yt_extractor.exception.YoutubeRequestException
+import com.raka.ytube_extractor.exception.ExtractionException
+import com.raka.ytube_extractor.exception.YoutubeRequestException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class ExtractorActivity : AppCompatActivity() {
         }
     }
     private fun getUrl() {
-        val youtubeJExtractor = YoutubeJExtractor()
+        val youtubeJExtractor = com.raka.ytube_extractor.YoutubeJExtractor()
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val url = youtubeJExtractor.getUrlForAndroidEmbeddedPlayer(findViewById<EditText>(R.id.youtubeId).text.toString())
