@@ -26,6 +26,7 @@ class ExtractorActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val url = youtubeJExtractor.getUrlForAndroidEmbeddedPlayer(findViewById<EditText>(R.id.youtubeId).text.toString())
+//                val url1 = youtubeJExtractor.getAudioVideoURl(findViewById<EditText>(R.id.youtubeId).text.toString())
                 withContext(Dispatchers.Main){
                     findViewById<TextView>(R.id.cdnUrl).text = url
                 }

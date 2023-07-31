@@ -8,6 +8,7 @@ import com.raka.ytube_extractor.exception.VideoIsUnavailable;
 import com.raka.ytube_extractor.exception.YoutubeRequestException;
 import com.raka.ytube_extractor.models.AdaptiveAudioStream;
 import com.raka.ytube_extractor.models.AdaptiveVideoStream;
+import com.raka.ytube_extractor.models.AudioVideoUrl;
 import com.raka.ytube_extractor.models.newModels.AdaptiveFormatsItem;
 import com.raka.ytube_extractor.models.newModels.PlayabilityStatus;
 import com.raka.ytube_extractor.models.newModels.VideoPlayerConfig;
@@ -108,6 +109,28 @@ public class YoutubeJExtractor {
     public String getUrlForAndroidEmbeddedPlayer(String videoId) throws ExtractionException, YoutubeRequestException, VideoIsUnavailable {
         VideoPlayerConfig videoData = extract(videoId);
         return Objects.requireNonNull(videoData.getStreamingData()).getMuxedStreams().get(0).getUrl().replace("c=WEB", "c=ANDROID_EMBEDDED_PLAYER");
+    }
+
+    public AudioVideoUrl getAudioVideoURl(String videoId) throws ExtractionException, YoutubeRequestException, VideoIsUnavailable {
+        VideoPlayerConfig videoData = extract(videoId);
+        AudioVideoUrl audioVideoUrl = new AudioVideoUrl();
+        List<AdaptiveVideoStream> videoStreamList = videoData.getStreamingData().getAdaptiveVideoStreams();
+        List<AdaptiveAudioStream> audioStreamList = videoData.getStreamingData().getAdaptiveAudioStreams();
+        audioVideoUrl.setAudioUrl(audioStreamList.get(0).getUrl());
+        for (int i = 0; i < videoStreamList.size(); i++) {
+            Log.i(TAG, "getAudioVideoURl: video: i " + videoStreamList.get(i).getQualityLabel() + " ext" + videoStreamList.get(i).getExtension());
+            audioVideoUrl.setVideoUrl(videoStreamList.get(i).getUrl());
+            if (Objects.equals(videoStreamList.get(i).getQualityLabel(), "360p") && Objects.equals(videoStreamList.get(i).getExtension(), "mp4")) {
+                return audioVideoUrl;
+            }
+        }
+
+        return audioVideoUrl;
+
+//        for (int i = 0; i < audioStreamList.size(); i++) {
+//            Log.i(TAG, "getAudioVideoURl: audio: 2 " + audioStreamList.get(i));
+//        }
+//        return Objects.requireNonNull(videoData.getStreamingData()).getMuxedStreams().get(0).getUrl().replace("c=WEB", "c=ANDROID_EMBEDDED_PLAYER");
     }
 
     public String getUrl(String videoId) throws ExtractionException, YoutubeRequestException, VideoIsUnavailable {
